@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+    spacing="12.0"
+>
+    <padding>
+        <Insets top="12.0" bottom="12.0" right="12.0" left="12.0" />
+    </padding>
+    <children>
+        <Text
+            text="Local Source File Fetch Module"
+            style="
+                -fx-font-size: 16;
+                -fx-font-weight: bold;
+            "
+        />
+        
+        <VBox
+            spacing="8.0"
+        >
+            <Text
+                text="Choose the directory with student solutions as subdirectories: "
+            />
+            <HBox
+                alignment="CENTER_LEFT"
+                spacing="8.0"
+            >
+                <Button text="Browse..." fx:id="browseBtn" onAction="#openDirectoryChooser" />
+                <Text
+                    text="Chosen directory: "
+                />
+                <Text fx:id="chosenDirText"
+                    text="(no directory chosen)"
+                    style="
+                        -fx-font-style: italic;
+                    "
+                />
+            </HBox>
+        </VBox>
+    </children>
+</VBox>

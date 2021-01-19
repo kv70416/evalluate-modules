@@ -1,0 +1,30 @@
+plugins {
+  id 'java'
+  id 'jacoco'
+  id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+javafx {
+    version = "15.0.1"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+
+dependencies {
+    testImplementation     'junit:junit:4.13'
+    implementation         files('libs/DiplApp.jar')
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources"]
+            includes = ["**/*.fxml","META-INF/services/*"]
+        }
+    }
+}

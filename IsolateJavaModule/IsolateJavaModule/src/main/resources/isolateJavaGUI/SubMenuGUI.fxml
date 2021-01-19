@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+    spacing="12.0"
+>
+    <padding>
+        <Insets top="12.0" bottom="12.0" right="12.0" left="12.0" />
+    </padding>
+    <children>
+        <Text
+            text="Isolate Java Compilation Module"
+            style="
+                -fx-font-size: 16;
+                -fx-font-weight: bold;
+            "
+        />
+        
+        <VBox
+            spacing="8.0"
+        >
+            <padding>
+                <Insets bottom="8.0"/>
+            </padding>
+            <children>
+                <Text
+                    text="Choose the executable of the ISOLATE sandboxing software:"
+                />
+                <HBox
+                    alignment="CENTER_LEFT"
+                    spacing="8.0"
+                >
+                    <Button text="Browse..." fx:id="isolateFileBrowseBtn" onAction="#openIsolateFileChooser" />
+                    <Text
+                        text="Chosen file: "
+                    />
+                    <Text fx:id="chosenIsolateFileText"
+                        text="(no file chosen)"
+                        style="
+                            -fx-font-style: italic;
+                        "
+                    />
+                </HBox>
+            </children>
+        </VBox>
+        
+        <VBox
+            spacing="8.0"
+        >
+            <padding>
+                <Insets bottom="8.0"/>
+            </padding>
+            <children>            
+                <Text
+                    text="Choose the directory of the JDK to be used for compilation: "
+                />
+                <HBox
+                    alignment="CENTER_LEFT"
+                    spacing="8.0"
+                >
+                    <Button text="Browse..." fx:id="jdkDirectoryBrowseBtn" onAction="#openJdkDirectoryChooser" />
+                    <Text
+                        text="Chosen directory: "
+                    />
+                    <Text fx:id="chosenJdkDirectoryText"
+                        text="(no directory chosen)"
+                        style="
+                            -fx-font-style: italic;
+                        "
+                    />
+                </HBox>
+            </children>
+        </VBox>
+        
+        <VBox
+            spacing="8.0"
+        >
+            <children>            
+                <HBox
+                    alignment="CENTER_LEFT"
+                    spacing="8.0"
+                >
+                    <Text
+                        text="Main file path: "
+                    />
+                    <TextField fx:id="mainFileField" onKeyTyped="#readMainFileField" />
+                    <!--Button text="Add" fx:id="mainFileAddBtn" /-->
+                </HBox>
+                <!--VBox fx:id="mainFileListBox"
+                    spacing="8.0"
+                /-->
+            </children>
+        </VBox>
+        
+    </children>
+</VBox>

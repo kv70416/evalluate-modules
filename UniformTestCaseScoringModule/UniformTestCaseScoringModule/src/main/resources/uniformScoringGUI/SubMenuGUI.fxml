@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+    spacing="12.0"
+>
+    <padding>
+        <Insets top="12.0" bottom="12.0" right="12.0" left="12.0" />
+    </padding>
+    <children>
+        <Text
+            text="Uniform Test Case Scoring Module"
+            style="
+                -fx-font-size: 16;
+                -fx-font-weight: bold;
+            "
+        />
+        
+        <VBox
+            spacing="8.0"
+        >
+            <padding>
+                <Insets bottom="8.0"/>
+            </padding>
+            <children>
+                <Text
+                    text="Choose the directory populated with test cases: "
+                />
+                <HBox
+                    alignment="CENTER_LEFT"
+                    spacing="8.0"
+                >
+                    <Button text="Browse..." fx:id="testCaseBrowseBtn" onAction="#openTestCaseDirChooser" />
+                    <Text
+                        text="Chosen directory: "
+                    />
+                    <Text fx:id="chosenTestCaseDir"
+                        text="(no file chosen)"
+                        style="
+                            -fx-font-style: italic;
+                        "
+                    />
+                </HBox>
+            </children>
+        </VBox>
+        
+        <HBox
+            alignment="CENTER_LEFT"
+            spacing="8.0"
+        >
+            <Text
+                text="Input file name: "
+            />
+            <TextField fx:id="inFileNameField" onKeyTyped="#readInFileNameField" />
+        </HBox>
+        
+        <HBox
+            alignment="CENTER_LEFT"
+            spacing="8.0"
+        >
+            <Text
+                text="Output file name: "
+            />
+            <TextField fx:id="outFileNameField" onKeyTyped="#readOutFileNameField" />
+        </HBox>
+        
+        <HBox
+            alignment="CENTER_LEFT"
+            spacing="8.0"
+        >
+            <Text
+                text="Score awarded per test case: "
+            />
+            <TextField fx:id="scorePerCaseField" onKeyTyped="#readScorePerCaseField" />
+        </HBox>
+        
+    </children>
+</VBox>
