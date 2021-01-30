@@ -21,6 +21,8 @@ public class ModuleExecution {
         studentIDs = new HashMap<>();
         studentBoxPaths = new HashMap<>();
 
+        boolean success = true;
+
         for (int i = 0; i < students.size(); i++) {
             ProcessBuilder isolateInit = new ProcessBuilder(
                 config.getIsolateExePath(),
@@ -32,23 +34,27 @@ public class ModuleExecution {
             ProcOutcomes initOutcomes = runProcessWithOutput(isolateInit, "ISOLATE INIT FAILED");
 
             if (initOutcomes.returnValue == 0) {
-                String boxPath = null;
                 try {
-                    boxPath = initOutcomes.outputReader.readLine();
+                    String boxPath = initOutcomes.outputReader.readLine();
+
+                    studentIDs.put(students.get(i), i);
+                    studentBoxPaths.put(students.get(i), boxPath + "/box");
+                    
+                    File studentSrcDir = Paths.get(boxPath, "box", students.get(i)).toFile();
+                    success = success && studentSrcDir.mkdir();    
                 }
                 catch (IOException e) {
                     outputExceptionError("ISOLATE BOX PATH UNKNOWN", e);
+                    success = false;
                 }
-                studentIDs.put(students.get(i), i);
-                studentBoxPaths.put(students.get(i), boxPath + "/box");
-                
-                File studentSrcDir = Paths.get(boxPath, "box", students.get(i)).toFile();
-                studentSrcDir.mkdir();
+            }
+            else {
+                success = false;
             }
 
         }
 
-        return true;
+        return success;
     }
     
     public boolean compile(String student, ModuleConfiguration config) {
