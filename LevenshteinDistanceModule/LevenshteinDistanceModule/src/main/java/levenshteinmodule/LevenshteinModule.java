@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -47,16 +48,14 @@ public class LevenshteinModule implements IDuplicateDetectionModule {
     Map<String, Map<String, Double>> detectionScores = new HashMap<>();
 
     @Override
-    public boolean runDuplicateDetection(List<String> students, List<String> studentSourcePaths) {
-        for (int i = 0; i < students.size(); i++) {
-            for (int j = 0; j < students.size(); j++) {
-                if (i >= j) continue;
-                
-                String student1 = students.get(i);
-                String student2 = students.get(j);
-                
-                String student1Path = studentSourcePaths.get(i);
-                String student2Path = studentSourcePaths.get(j);
+    public boolean runDuplicateDetection(Map<String, String> studentSourcePaths) {
+        Set<String> students = studentSourcePaths.keySet();
+        for (String student1 : students) {
+            for (String student2 : students) {
+                if (student1.equals(student2)) continue;
+
+                String student1Path = studentSourcePaths.get(student1);
+                String student2Path = studentSourcePaths.get(student2);
 
                 double score = calculateDistance(student1Path, student2Path);
                 

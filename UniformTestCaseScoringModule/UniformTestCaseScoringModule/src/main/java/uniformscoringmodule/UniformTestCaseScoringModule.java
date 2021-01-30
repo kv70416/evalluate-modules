@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
     
     private int scorePerCase = 1;
     
-    private Map<String, Map<Integer, Integer>> scores = new HashMap<>();
+    private Map<String, Map<String, Integer>> scores = new HashMap<>();
     
     @Override
     public Node moduleGUI(Stage mainWindow, Runnable mainSceneRefresh) {
@@ -95,24 +94,19 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
         return scorePerCase;
     }
     
-    
+        
     @Override
-    public int numberOfSegments() {
-        return testCaseNames.size();
-    }
-    
-    @Override
-    public List<String> segmentNames() {
+    public List<String> inputSegments() {
         return testCaseNames;
     }
 
 
     @Override
-    public boolean fetchInputFile(int inputNumber, String inputFilePath) {
+    public boolean fetchInputFile(String segmentName, String inputFilePath) {
         // TODO remove
         System.out.println("FETCHING INPUT...");
         
-        Path inPath = Paths.get(testCaseDirectory, testCaseNames.get(inputNumber - 1), inFileName);
+        Path inPath = Paths.get(testCaseDirectory, segmentName, inFileName);
         Path targetInPath = Paths.get(inputFilePath);
         
         // TODO remove
@@ -138,21 +132,19 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
     }
 
     @Override
-    public void addOutputScore(String student, int inputNumber, String actualOutputPath) {
+    public void addOutputScore(String student, String segmentName, String actualOutputPath) {
         if (scores.get(student) == null) {
             scores.put(student, new HashMap<>());
         }
         
-        inputNumber--;
-        
-        File outFile = Paths.get(testCaseDirectory, testCaseNames.get(inputNumber), outFileName).toFile();
+        File outFile = Paths.get(testCaseDirectory, segmentName, outFileName).toFile();
         File actOutFile = new File(actualOutputPath);
         
         if (!outFile.exists() || !actOutFile.exists()) {
             // TODO remove
             System.out.println("OUTPUT FILE MISSING");
             
-            scores.get(student).put(inputNumber, 0);
+            scores.get(student).put(segmentName, 0);
             return;
         }
         
@@ -182,10 +174,10 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
             }
             
             if (same) {
-                scores.get(student).put(inputNumber, scorePerCase);
+                scores.get(student).put(segmentName, scorePerCase);
             }
             else {
-                scores.get(student).put(inputNumber, 0);
+                scores.get(student).put(segmentName, 0);
             }
 
             expectedOutFile.close();
@@ -194,37 +186,43 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
             return;
         }
         catch (IOException e) {
-            scores.get(student).put(inputNumber, 0);
+            scores.get(student).put(segmentName, 0);
             return;
         }
         
     }
 
     @Override
-    public double scoreSolution(String student) {
+    public void addFailScore(String student, String segmentName) {
+        return;
+    }
+
+
+    @Override
+    public double solutionScore(String student) {
         if (scores.get(student) == null) {
             return 0;
         }
         
         int totalScore = 0;
-        for (int i = 0; i < testCaseNames.size(); i++) {
-            if (scores.get(student).get(i) != null) {
-                totalScore += scores.get(student).get(i);
+        for (String testName : testCaseNames) {
+            if (scores.get(student).get(testName) != null) {
+                totalScore += scores.get(student).get(testName);
             }
         }
         return totalScore;
     }
     
     @Override
-    public List<Double> scorePerSegment(String student) {
+    public Map<String, Double> segmentScores(String student) {
         if (scores.get(student) == null) {
-            return Collections.nCopies(testCaseNames.size(), 0.);
+            return null;
         }
         
-        List<Double> scoreList = new ArrayList<>();
-        for (int i = 0; i < testCaseNames.size(); i++) {
-            if (scores.get(student).get(i) != null) {
-                scoreList.add(scores.get(student).get(i).doubleValue());
+        Map<String, Double> scoreList = new HashMap<>();
+        for (String testName : testCaseNames) {
+            if (scores.get(student).get(testName) != null) {
+                scoreList.put(testName, scores.get(student).get(testName).doubleValue());
             }
         }
         return scoreList;
