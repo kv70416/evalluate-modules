@@ -22,6 +22,16 @@ public class SubMenuGUIController {
         this.baseStage = base;
         this.refreshFunc = refresh;
     }
+
+
+    public void initialize() {
+        scorePerCaseField.focusedProperty().addListener((obj, oldFocus, newFocus) -> {
+            if (!newFocus) {
+                scorePerCaseField.setText(Integer.toString(module.getScorePerCase()));
+            }
+        });
+    }
+
     
     public void setInFileNameFieldValue(String value) {
         if (inFileNameField != null) {
@@ -84,16 +94,17 @@ public class SubMenuGUIController {
     
     @FXML
     public void readScorePerCaseField() {
-        int s;
+        String fieldText = scorePerCaseField.getText();
+        if (fieldText == null || fieldText == "") {
+            return;
+        }
         try {
-            s = Integer.parseInt(scorePerCaseField.getText());
+            int s = Integer.parseInt(fieldText);
+            module.setScorePerCase(s);
         }
         catch (NumberFormatException e) {
             scorePerCaseField.setText(Integer.toString(module.getScorePerCase()));
-            refreshFunc.run();
-            return;
         }
-        module.setScorePerCase(s);
         refreshFunc.run();
     }
     
