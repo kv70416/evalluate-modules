@@ -25,6 +25,28 @@ public class SubMenuGUIController {
 
 
     public void initialize() {
+        inFileNameField.textProperty().addListener((obj, oldText, newText) -> {
+            module.setInFileName(newText);
+            refreshFunc.run();
+        });
+        outFileNameField.textProperty().addListener((obj, oldText, newText) -> {
+            module.setOutFileName(newText);
+            refreshFunc.run();
+        });
+        scorePerCaseField.textProperty().addListener((obj, oldText, newText) -> {
+            if (newText == null || newText == "") {
+                return;
+            }
+            try {
+                int s = Integer.parseInt(newText);
+                module.setScorePerCase(s);
+            }
+            catch (NumberFormatException e) {
+                scorePerCaseField.setText(Integer.toString(module.getScorePerCase()));
+            }
+            refreshFunc.run();
+        });
+
         scorePerCaseField.focusedProperty().addListener((obj, oldFocus, newFocus) -> {
             if (!newFocus) {
                 scorePerCaseField.setText(Integer.toString(module.getScorePerCase()));
@@ -80,32 +102,4 @@ public class SubMenuGUIController {
         }
     }
 
-    @FXML
-    public void readInFileNameField() {
-        module.setInFileName(inFileNameField.getText());
-        refreshFunc.run();
-    }
-    
-    @FXML
-    public void readOutFileNameField() {
-        module.setOutFileName(outFileNameField.getText());
-        refreshFunc.run();
-    }
-    
-    @FXML
-    public void readScorePerCaseField() {
-        String fieldText = scorePerCaseField.getText();
-        if (fieldText == null || fieldText == "") {
-            return;
-        }
-        try {
-            int s = Integer.parseInt(fieldText);
-            module.setScorePerCase(s);
-        }
-        catch (NumberFormatException e) {
-            scorePerCaseField.setText(Integer.toString(module.getScorePerCase()));
-        }
-        refreshFunc.run();
-    }
-    
 }

@@ -24,6 +24,14 @@ public class SubMenuGUIController {
         this.refreshFunc = refresh;
     }
 
+
+    public void initialize() {
+        mainFileField.textProperty().addListener((obj, oldText, newText) -> {
+            config.setMainJavaFile(newText);
+            refreshFunc.run();
+        });
+    }
+
     
     @FXML
     public void openIsolateFileChooser() {
@@ -88,9 +96,4 @@ public class SubMenuGUIController {
         }
     } 
     
-    @FXML
-    public void readMainFileField() {
-        config.setMainJavaFile(mainFileField.getText());
-        refreshFunc.run();
-    }
 }

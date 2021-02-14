@@ -56,8 +56,7 @@
                 <Text
                     text="Enter total file size limit per solution (MB): "
                 />
-                <TextField fx:id="maxSolSizeField" onKeyTyped="#readMaxSolSizeField"
-                />
+                <TextField fx:id="maxSolSizeField" />
             </HBox>
         </VBox>
     </children>

@@ -25,6 +25,17 @@ public class SubMenuGUIController {
 
     public void initialize() {
         maxSolSizeField.setText("1");
+
+        maxSolSizeField.textProperty().addListener((obj, oldText, newText) -> {
+            try {
+                double mb = Double.parseDouble(newText);
+                module.setMaxMBPerStudent(mb);
+            }
+            catch (NumberFormatException e) {
+                module.setMaxMBPerStudent(0);
+            }
+            refreshFunc.run();
+        });
     }
     
     private void setChosenDirText(String chosenDirPath) {
@@ -54,17 +65,4 @@ public class SubMenuGUIController {
         refreshFunc.run();
     }
 
-    @FXML
-    public void readMaxSolSizeField() {
-        try {
-            String fieldText = maxSolSizeField.getText();
-            double mb = Double.parseDouble(fieldText);
-            module.setMaxMBPerStudent(mb);
-        }
-        catch (NumberFormatException e) {
-            module.setMaxMBPerStudent(0);
-        }
-
-        refreshFunc.run();
-    }
 }
