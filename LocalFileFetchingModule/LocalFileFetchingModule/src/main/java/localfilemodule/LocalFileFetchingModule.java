@@ -17,6 +17,7 @@ import mainapp.modules.interfaces.IFileFetchingModule;
 public class LocalFileFetchingModule implements IFileFetchingModule {
     
     private String selectedPath = null;
+    private int maxBytesPerStudent = 1048576;
     
     @Override
     public Node moduleGUI(Stage mainWindow, Runnable mainSceneRefresh) {
@@ -42,10 +43,14 @@ public class LocalFileFetchingModule implements IFileFetchingModule {
     public void setSelectedPath(String path) {
         selectedPath = path;
     }
+
+    public void setMaxMBPerStudent(double mb) {
+        maxBytesPerStudent = (int) Math.round(Math.ceil(mb * 1024 * 1024));
+    }
     
     @Override
     public boolean isConfigured() {
-        if (selectedPath == null) {
+        if (selectedPath == null || maxBytesPerStudent <= 0) {
             return false;
         }
         return Paths.get(selectedPath).toFile().isDirectory();
@@ -69,9 +74,6 @@ public class LocalFileFetchingModule implements IFileFetchingModule {
     }
     
     
-    
-    private int maxBytes = 102400;
-    
     @Override
     public boolean fetchSourceFiles(String student, String targetSourcePath) {
         System.out.println("Fetching source for: " + student + ".");
@@ -87,6 +89,7 @@ public class LocalFileFetchingModule implements IFileFetchingModule {
     
     
     private boolean copyFilesInDir(Path sourceDirPath, Path targetDirPath) {
+        int maxBytes = maxBytesPerStudent;
         File[] sourceFiles = sourceDirPath.toFile().listFiles();
         for (File sourceFile : sourceFiles) {
             Path sourceFilePath = sourceFile.toPath();

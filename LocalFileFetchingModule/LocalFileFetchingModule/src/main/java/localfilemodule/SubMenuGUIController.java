@@ -3,6 +3,7 @@ package localfilemodule;
 import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -14,11 +15,16 @@ public class SubMenuGUIController {
     
     public Button browseBtn = null;
     public Text chosenDirText = null;
+    public TextField maxSolSizeField = null;
     
     public SubMenuGUIController(LocalFileFetchingModule module, Stage base, Runnable refresh) {
         this.module = module;
         this.baseStage = base;
         this.refreshFunc = refresh;
+    }
+
+    public void initialize() {
+        maxSolSizeField.setText("1");
     }
     
     private void setChosenDirText(String chosenDirPath) {
@@ -45,6 +51,20 @@ public class SubMenuGUIController {
             setChosenDirText(selectedDirectory.getAbsolutePath());
         }
         
+        refreshFunc.run();
+    }
+
+    @FXML
+    public void readMaxSolSizeField() {
+        try {
+            String fieldText = maxSolSizeField.getText();
+            double mb = Double.parseDouble(fieldText);
+            module.setMaxMBPerStudent(mb);
+        }
+        catch (NumberFormatException e) {
+            module.setMaxMBPerStudent(0);
+        }
+
         refreshFunc.run();
     }
 }

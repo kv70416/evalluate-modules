@@ -2,6 +2,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.text.Text?>
 <?import javafx.geometry.Insets?>
 
@@ -26,19 +27,36 @@
             <Text
                 text="Choose the directory with student solutions as subdirectories: "
             />
+
             <HBox
                 alignment="CENTER_LEFT"
                 spacing="8.0"
             >
-                <Button text="Browse..." fx:id="browseBtn" onAction="#openDirectoryChooser" />
+                <padding>
+                    <Insets bottom="8.0" />
+                </padding>
+                <children>
+                    <Button text="Browse..." fx:id="browseBtn" onAction="#openDirectoryChooser" />
+                    <Text
+                        text="Chosen directory: "
+                    />
+                    <Text fx:id="chosenDirText"
+                        text="(no directory chosen)"
+                        style="
+                            -fx-font-style: italic;
+                        "
+                    />
+                </children>
+            </HBox>
+
+            <HBox
+                alignment="CENTER_LEFT"
+                spacing="8.0"
+            >
                 <Text
-                    text="Chosen directory: "
+                    text="Enter total file size limit per solution (MB): "
                 />
-                <Text fx:id="chosenDirText"
-                    text="(no directory chosen)"
-                    style="
-                        -fx-font-style: italic;
-                    "
+                <TextField fx:id="maxSolSizeField" onKeyTyped="#readMaxSolSizeField"
                 />
             </HBox>
         </VBox>
