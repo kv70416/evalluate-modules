@@ -1,0 +1,33 @@
+plugins {
+  id 'java'
+  id 'jacoco'
+  id 'org.openjfx.javafxplugin' version '0.0.9'
+  id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+javafx {
+    version = "15.0.1"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+
+dependencies {
+    testImplementation     'junit:junit:4.13'
+    implementation         files('libs/DiplApp.jar')
+
+    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.22'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources"]
+            includes = ["**/*.fxml","META-INF/services/*"]
+        }
+    }
+}
