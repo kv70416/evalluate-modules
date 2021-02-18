@@ -2,7 +2,6 @@ plugins {
   id 'java'
   id 'jacoco'
   id 'org.openjfx.javafxplugin' version '0.0.9'
-  id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 repositories {
@@ -16,11 +15,18 @@ javafx {
 }
 
 
+configurations {
+    externalDeps
+}
+
 dependencies {
     testImplementation     'junit:junit:4.13'
-    implementation         files('libs/DiplApp.jar')
 
-    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.22'
+    implementation         files('../../lib/EvAlluate.jar')
+
+    externalDeps           group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.22'
+
+    configurations.implementation.extendsFrom(configurations.externalDeps)
 }
 
 sourceSets {
@@ -29,5 +35,11 @@ sourceSets {
             srcDirs = ["src/main/resources"]
             includes = ["**/*.fxml","META-INF/services/*"]
         }
+    }
+}
+
+jar {
+    from {
+        configurations.externalDeps.collect{ it.isDirectory() ? it : zipTree(it) }
     }
 }

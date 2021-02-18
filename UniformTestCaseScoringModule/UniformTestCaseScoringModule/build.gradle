@@ -17,7 +17,8 @@ javafx {
 
 dependencies {
     testImplementation     'junit:junit:4.13'
-    implementation         files('libs/DiplApp.jar')
+
+    implementation         files('../../lib/EvAlluate.jar')
 }
 
 sourceSets {
