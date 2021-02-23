@@ -28,6 +28,7 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
     private int scorePerCase = 1;
     
     private Map<String, Map<String, Integer>> scores = new HashMap<>();
+    private Map<String, Map<String, String>> messages = new HashMap<>();
     
     @Override
     public Node moduleGUI(Stage mainWindow, Runnable mainSceneRefresh) {
@@ -136,15 +137,16 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
         if (scores.get(student) == null) {
             scores.put(student, new HashMap<>());
         }
+        if (messages.get(student) == null) {
+            messages.put(student, new HashMap<>());
+        }
         
         File outFile = Paths.get(testCaseDirectory, segmentName, outFileName).toFile();
         File actOutFile = new File(actualOutputPath);
         
         if (!outFile.exists() || !actOutFile.exists()) {
-            // TODO remove
-            System.out.println("OUTPUT FILE MISSING");
-            
             scores.get(student).put(segmentName, 0);
+            messages.get(student).put(segmentName, "Error reading output file.");
             return;
         }
         
@@ -154,6 +156,7 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
             
             String expLine, actLine;
             boolean same = true;
+            int lineNumber = 1;
             while (true) {
                 expLine = expectedOutFile.readLine();
                 actLine = actualOutFile.readLine();
@@ -171,13 +174,17 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
                     same = false;
                     break;
                 }
+
+                lineNumber++;
             }
             
             if (same) {
                 scores.get(student).put(segmentName, scorePerCase);
+                messages.get(student).put(segmentName, "Correct!");
             }
             else {
                 scores.get(student).put(segmentName, 0);
+                messages.get(student).put(segmentName, "In line " + lineNumber + ":\nExpected: " + expLine + "\nReceived: " + actLine);
             }
 
             expectedOutFile.close();
@@ -187,6 +194,7 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
         }
         catch (IOException e) {
             scores.get(student).put(segmentName, 0);
+            messages.get(student).put(segmentName, "Error reading output file.");
             return;
         }
         
@@ -226,6 +234,21 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
             }
         }
         return scoreList;
+    }
+
+    @Override
+    public Map<String, String> segmentMessages(String student) {
+        if (messages.get(student) == null) {
+            return null;
+        }
+        
+        Map<String, String> msgList = new HashMap<>();
+        for (String testName : testCaseNames) {
+            if (messages.get(student).get(testName) != null) {
+                msgList.put(testName, messages.get(student).get(testName));
+            }
+        }
+        return msgList;
     }
 
     
