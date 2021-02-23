@@ -76,6 +76,28 @@
                 </HBox>
             </children>
         </VBox>
+
+        <HBox
+            alignment="CENTER_LEFT"
+            spacing="8.0"
+        >
+            <Text
+                text="Execution time limit (s): "
+            />
+            <TextField fx:id="timeLimitField"
+            />
+        </HBox>
+
+        <HBox
+            alignment="CENTER_LEFT"
+            spacing="8.0"
+        >
+            <Text
+                text="Execution memory limit (MB): "
+            />
+            <TextField fx:id="memLimitField"
+            />
+        </HBox>
         
     </children>
 </VBox>

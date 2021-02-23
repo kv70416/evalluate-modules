@@ -3,6 +3,7 @@ package isolatecmodule;
 import java.io.File;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -15,13 +16,44 @@ public class SubMenuGUIController {
     public Text chosenIsolateFileText = null;
     public Text chosenGccFileText = null;
     
+    public TextField timeLimitField = null;
+    public TextField memLimitField = null;
+
 	public SubMenuGUIController(ModuleConfiguration module, Stage base, Runnable refresh) {
         this.config = module;
         this.baseStage = base;
         this.refreshFunc = refresh;
 	}
 
-    
+
+    public void initialize() {
+        timeLimitField.setText(Long.toString(config.getTimeLimit()));
+        memLimitField.setText(Long.toString(config.getMemLimit()));
+
+        timeLimitField.textProperty().addListener((obj, oldText, newText) -> {
+            try {
+                long s = Long.parseLong(newText);
+                config.setTimeLimit(s);
+            }
+            catch (NumberFormatException e) {
+                config.setTimeLimit(0);
+            }
+            refreshFunc.run();
+        });
+        memLimitField.textProperty().addListener((obj, oldText, newText) -> {
+            try {
+                long mb = Long.parseLong(newText);
+                config.setMemLimit(mb);
+            }
+            catch (NumberFormatException e) {
+                config.setMemLimit(0);
+            }
+            refreshFunc.run();
+        });
+    }
+
+
+
     @FXML
     public void openIsolateFileChooser() {
         if (baseStage == null) {

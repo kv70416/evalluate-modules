@@ -7,6 +7,9 @@ public class ModuleConfiguration {
     private String isolateExePath = null;
     private String gccPath = null;
     private String ldPath = null;
+
+    private long memLimit = 512;
+    private long timeLimit = 1;
     
     public boolean setIsolateExePath(String path) {
         File isoExe = new File(path);
@@ -52,10 +55,31 @@ public class ModuleConfiguration {
     public String getLdPath() {
         return ldPath;
     }
-    
-    
+
+
+    public long getMemLimit() {
+        return memLimit;
+    }
+
+    public void setMemLimit(long memLimit) {
+        this.memLimit = memLimit;
+    }
+
+    public long getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(long timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+
     public boolean validate() {
-        return isolateExePath != null && gccPath != null && ldPath != null;
+        return isolateExePath != null
+            && gccPath != null 
+            && ldPath != null 
+            && memLimit > 0 
+            && timeLimit > 0;
     }
     
 }

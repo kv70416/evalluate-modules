@@ -17,6 +17,8 @@ public class SubMenuGUIController {
     public Text chosenJdkDirectoryText = null;
     
     public TextField mainFileField = null;
+    public TextField timeLimitField = null;
+    public TextField memLimitField = null;
     
     public SubMenuGUIController(ModuleConfiguration module, Stage base, Runnable refresh) {
         this.config = module;
@@ -26,8 +28,31 @@ public class SubMenuGUIController {
 
 
     public void initialize() {
+        timeLimitField.setText(Long.toString(config.getTimeLimit()));
+        memLimitField.setText(Long.toString(config.getMemLimit()));
+
         mainFileField.textProperty().addListener((obj, oldText, newText) -> {
             config.setMainJavaFile(newText);
+            refreshFunc.run();
+        });
+        timeLimitField.textProperty().addListener((obj, oldText, newText) -> {
+            try {
+                long s = Long.parseLong(newText);
+                config.setTimeLimit(s);
+            }
+            catch (NumberFormatException e) {
+                config.setTimeLimit(0);
+            }
+            refreshFunc.run();
+        });
+        memLimitField.textProperty().addListener((obj, oldText, newText) -> {
+            try {
+                long mb = Long.parseLong(newText);
+                config.setMemLimit(mb);
+            }
+            catch (NumberFormatException e) {
+                config.setMemLimit(0);
+            }
             refreshFunc.run();
         });
     }

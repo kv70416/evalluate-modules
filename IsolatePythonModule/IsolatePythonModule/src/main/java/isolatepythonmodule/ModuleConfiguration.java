@@ -8,6 +8,8 @@ public class ModuleConfiguration {
     private String pythonPath = null;
     
     private String mainFile = "main.py";
+    private long memLimit = 512;
+    private long timeLimit = 1;
     
     
     public boolean setIsolateExePath(String path) {
@@ -52,8 +54,29 @@ public class ModuleConfiguration {
     }
     
     
-    public boolean validate() {
-        return isolateExePath != null && pythonPath != null && mainFile != null && mainFile != "";
+    public long getMemLimit() {
+        return memLimit;
     }
+
+    public void setMemLimit(long memLimit) {
+        this.memLimit = memLimit;
+    }
+
+    public long getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(long timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
     
+    public boolean validate() {
+        return isolateExePath != null 
+            && pythonPath != null 
+            && mainFile != null 
+            && mainFile != ""
+            && memLimit > 0
+            && timeLimit > 0;
+    }
 }

@@ -89,6 +89,9 @@ public class ModuleExecution {
                 "-d", config.getJavaJdkPath(),
                 "-i", "in",
                 "-o", "out",
+                "--cg-mem=" + Long.toString(config.getMemLimit() * 1024),
+                "-t", Long.toString(config.getTimeLimit()),
+                "-w", Long.toString(3 * config.getTimeLimit()),
                 "--run", "--", config.getJavaJdkPath() + "/bin/java", "-cp", student, config.getMainClass()
             );
 

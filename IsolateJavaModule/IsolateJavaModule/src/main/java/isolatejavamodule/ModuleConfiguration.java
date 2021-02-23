@@ -11,7 +11,10 @@ public class ModuleConfiguration {
     private String mainFile = "Main.java";
     private String mainClass = "Main";
     
+    private long memLimit = 512;
+    private long timeLimit = 1;
     
+   
     public boolean setIsolateExePath(String path) {
         File isoExe = new File(path);
         if (isoExe.exists() && isoExe.isFile() && isoExe.canExecute()) {
@@ -65,11 +68,13 @@ public class ModuleConfiguration {
     
     public boolean validate() {
         return isolateExePath != null
-                && javaJdkPath != null 
-                && mainFile != null 
-                && mainClass != null 
-                && !mainFile.equals("") 
-                && !mainClass.equals("");
+            && javaJdkPath != null 
+            && mainFile != null 
+            && mainClass != null 
+            && !mainFile.equals("") 
+            && !mainClass.equals("")
+            && memLimit > 0
+            && timeLimit > 0;
     }
     
     
@@ -96,6 +101,22 @@ public class ModuleConfiguration {
             }
         }
         return false;
+    }
+
+    public long getMemLimit() {
+        return memLimit;
+    }
+
+    public void setMemLimit(long memLimit) {
+        this.memLimit = memLimit;
+    }
+
+    public long getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(long timeLimit) {
+        this.timeLimit = timeLimit;
     }
 
 }
