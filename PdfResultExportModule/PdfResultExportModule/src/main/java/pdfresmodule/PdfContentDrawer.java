@@ -116,7 +116,7 @@ public class PdfContentDrawer {
         String scoreText = Double.isNaN(testScore) ? "---" : String.format("%.2f", testScore);
         if (scoreText == null) return startHeight;
 
-        String msgText = (testMsg == null) ? "---" : testMsg;
+        String msgText = (testMsg == null) ? "---" : testMsg.replace("\n", " | ");
 
         try (
             PDPageContentStream contentStream = new PDPageContentStream(doc, page, PDPageContentStream.AppendMode.APPEND, true, true)

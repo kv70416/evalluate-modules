@@ -116,4 +116,14 @@ public class IsolatePythonModule implements ICodeCompilationModule {
         return exec.getStudentBoxOutPath(student);
     }
 
+    @Override
+    public String exportConfiguration() {
+        return config.exportC();
+    }
+
+    @Override
+    public boolean importConfiguration(String configStr) {
+        return config.importC(configStr);
+    }
+
 }

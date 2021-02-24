@@ -22,9 +22,13 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mainapp.modules.interfaces.IFileFetchingModule;
@@ -178,6 +182,47 @@ public class GitLabFetchingModule implements IFileFetchingModule {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    @Override
+    public String exportConfiguration() {
+        JSONObject obj = new JSONObject();
+        obj.put("id", repoID);
+        obj.put("sz", maxBytesPerStudent);
+        return obj.toString();
+    }
+
+    @Override
+    public boolean importConfiguration(String configString) {
+        try {
+            JSONObject configObj = new JSONObject(configString);
+            setRepoID(configObj.getString("id"));
+            maxBytesPerStudent = configObj.getInt("sz");
+        }
+        catch (JSONException e) {
+            return false;
+        }
+
+        Stage dialog = new Stage();
+        dialog.setTitle("GitLab Fork Fetch Configuration");
+        //dialog.initModality(Modality.WINDOW_MODAL);
+        //dialog.initOwner(mainWindow);
+
+        FXMLLoader resLoader = new FXMLLoader();
+        resLoader.setController(new TokenConfigWindowController(this));
+        resLoader.setLocation(getClass().getResource("/gitlabmodulegui/TokenConfigWindowGUI.fxml"));
+
+        try {
+            Pane pane = resLoader.<Pane>load();
+            dialog.setScene(new Scene(pane));
+            dialog.sizeToScene();
+            dialog.showAndWait();
+        }
+        catch (IOException e) {
+            return false;
+        }
+
+        return isConfigured();
     }
 
 }

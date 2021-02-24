@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
+
 public class ModuleConfiguration {
     
     private String isolateExePath = null;
@@ -118,5 +120,26 @@ public class ModuleConfiguration {
     public void setTimeLimit(long timeLimit) {
         this.timeLimit = timeLimit;
     }
+
+
+	public String exportC() {
+        JSONObject obj = new JSONObject();
+        obj.put("ip", isolateExePath);
+        obj.put("jp", javaJdkPath);
+        obj.put("mf", mainFile);
+        obj.put("ml", memLimit);
+        obj.put("tl", timeLimit);
+		return obj.toString();
+	}
+
+	public boolean importC(String configStr) {
+        JSONObject obj = new JSONObject(configStr);
+        setIsolateExePath(obj.getString("ip"));
+        setJavaJdkPath(obj.getString("jp"));
+        setMainJavaFile(obj.getString("mf"));
+        setMemLimit(obj.getLong("ml"));
+        setTimeLimit(obj.getLong("tl"));
+        return validate();
+	}
 
 }

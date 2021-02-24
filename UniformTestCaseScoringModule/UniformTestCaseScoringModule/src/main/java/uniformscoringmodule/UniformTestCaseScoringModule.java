@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONObject;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -277,6 +280,26 @@ public class UniformTestCaseScoringModule implements ISolutionScoringModule {
         });
 
         return ins.length == 1 && outs.length == 1;
+    }
+
+    @Override
+    public String exportConfiguration() {
+        JSONObject obj = new JSONObject();
+        obj.put("td", testCaseDirectory);
+        obj.put("sc", scorePerCase);
+        obj.put("if", inFileName);
+        obj.put("of", outFileName);
+		return obj.toString();
+    }
+
+    @Override
+    public boolean importConfiguration(String configStr) {
+        JSONObject obj = new JSONObject(configStr);
+        setTestCaseDir(obj.getString("td"));
+        setScorePerCase(obj.getInt("sc"));
+        setInFileName(obj.getString("if"));
+        setOutFileName(obj.getString("of"));
+        return isConfigured();
     }
 
 }

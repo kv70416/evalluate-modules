@@ -2,6 +2,8 @@ package isolatepythonmodule;
 
 import java.io.File;
 
+import org.json.JSONObject;
+
 public class ModuleConfiguration {
     
     private String isolateExePath = null;
@@ -79,4 +81,25 @@ public class ModuleConfiguration {
             && memLimit > 0
             && timeLimit > 0;
     }
+
+
+	public String exportC() {
+        JSONObject obj = new JSONObject();
+        obj.put("ip", isolateExePath);
+        obj.put("pp", pythonPath);
+        obj.put("mf", mainFile);
+        obj.put("ml", memLimit);
+        obj.put("tl", timeLimit);
+		return obj.toString();
+	}
+
+	public boolean importC(String configStr) {
+        JSONObject obj = new JSONObject(configStr);
+        setIsolateExePath(obj.getString("ip"));
+        setPythonPath(obj.getString("pp"));
+        setMainFileName(obj.getString("mf"));
+        setMemLimit(obj.getLong("ml"));
+        setTimeLimit(obj.getLong("tl"));
+        return validate();
+	}
 }

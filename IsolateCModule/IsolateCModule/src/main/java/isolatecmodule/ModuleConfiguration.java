@@ -2,6 +2,8 @@ package isolatecmodule;
 
 import java.io.File;
 
+import org.json.JSONObject;
+
 public class ModuleConfiguration {
     
     private String isolateExePath = null;
@@ -81,5 +83,26 @@ public class ModuleConfiguration {
             && memLimit > 0 
             && timeLimit > 0;
     }
+
+
+	public boolean importC(String configStr) {
+        JSONObject obj = new JSONObject(configStr);
+        setIsolateExePath(obj.getString("ip"));
+        setGccPath(obj.getString("gp"));
+        setLdPath(obj.getString("lp"));
+        setMemLimit(obj.getLong("ml"));
+        setTimeLimit(obj.getLong("tl"));
+        return validate();
+	}
+
+	public String exportC() {
+        JSONObject obj = new JSONObject();
+        obj.put("ip", isolateExePath);
+        obj.put("gp", gccPath);
+        obj.put("lp", ldPath);
+        obj.put("ml", memLimit);
+        obj.put("tl", timeLimit);
+		return obj.toString();
+	}
     
 }

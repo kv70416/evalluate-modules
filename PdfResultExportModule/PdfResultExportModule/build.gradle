@@ -24,6 +24,7 @@ dependencies {
 
     implementation         files('../../lib/EvAlluate.jar')
 
+    externalDeps           group: 'org.json', name: 'json', version: '20201115'
     externalDeps           group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.22'
 
     configurations.implementation.extendsFrom(configurations.externalDeps)

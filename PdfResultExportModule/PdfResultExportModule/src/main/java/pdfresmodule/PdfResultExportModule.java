@@ -107,4 +107,14 @@ public class PdfResultExportModule implements IResultExportModule {
         }
     }
 
+    @Override
+    public String exportConfiguration() {
+        return "";
+    }
+
+    @Override
+    public boolean importConfiguration(String arg0) {
+        return isConfigured();
+    }
+
 }

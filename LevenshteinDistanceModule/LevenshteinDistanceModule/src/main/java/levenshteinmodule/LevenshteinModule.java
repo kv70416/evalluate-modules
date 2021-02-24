@@ -189,4 +189,14 @@ public class LevenshteinModule implements IDuplicateDetectionModule {
         return detectionScores.get(student);
     }
 
+    @Override
+    public String exportConfiguration() {
+        return "";
+    }
+
+    @Override
+    public boolean importConfiguration(String configStr) {
+        return isConfigured();
+    }
+
 }

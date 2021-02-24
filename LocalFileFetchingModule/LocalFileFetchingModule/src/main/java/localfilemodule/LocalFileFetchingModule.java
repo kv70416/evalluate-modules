@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -118,5 +121,21 @@ public class LocalFileFetchingModule implements IFileFetchingModule {
 
         }
         return true;
+    }
+
+    @Override
+    public String exportConfiguration() {
+        JSONObject obj = new JSONObject();
+        obj.put("sp", selectedPath);
+        obj.put("mb", maxBytesPerStudent);
+		return obj.toString();
+    }
+
+    @Override
+    public boolean importConfiguration(String configStr) {
+        JSONObject obj = new JSONObject(configStr);
+        setSelectedPath(obj.getString("sp"));
+        maxBytesPerStudent = obj.getInt("mb");
+        return isConfigured();
     }
 }
